@@ -13,6 +13,7 @@
 ## 📖 Table of Contents
 - [Architecture Overview](#-architecture-overview)
 - [Quick Start Guide](#-quick-start-guide)
+- [Troubleshooting](#-troubleshooting)
 - [Testing Strategy](#-testing-strategy)
 - [Features & Capabilities](#-features--capabilities)
 - [Deployment](#-deployment)
@@ -69,54 +70,90 @@ ai-finagent-qa/
 
 ## 🚀 Quick Start Guide
 
-### Prerequisites
+### 1. Prerequisites
 
 * **Node.js**: v20.x or higher
 * **Bun**: v1.1+ (Recommended) or **npm** v10+
 
-### Installation
-
-1. **Clone & Enter**
+To install Bun, run this command in your terminal:
 ```bash
-git clone [https://github.com/yourusername/ai-finagent-qa.git](https://github.com/yourusername/ai-finagent-qa.git)
-cd ai-finagent-qa
+# For macOS, Linux, and WSL
+curl -fsSL https://bun.sh/install | bash
 
+# For Windows (in PowerShell)
+irm bun.sh/install.ps1 | iex
 ```
 
+### 2. Installation
 
-2. **Install Dependencies**
+Clone the repository and navigate into the directory:
+```bash
+git clone https://github.com/yourusername/ai-finagent-qa.git
+cd ai-finagent-qa
+```
+
+### 3. Install Dependencies
+
+Using Bun (recommended for speed):
 ```bash
 bun install
-
+```
+Or with npm:
+```bash
+npm install
 ```
 
+### 4. Environment Setup
 
-3. **Environment Setup**
+Copy the example environment file to a new `.env.local` file:
 ```bash
 cp .env.example .env.local
-
 ```
+Now, open `.env.local` and add your `GEMINI_API_KEY`. You can get your key from the [Google AI Studio](https://makersuite.google.com/app/apikey).
 
+### 5. Verification
 
-*Add your `GEMINI_API_KEY` to `.env.local`.*
-4. **Verify Quality**
+Before launching the app, run these checks to ensure everything is configured correctly:
 ```bash
-bun run lint       # Run ESLint
-bun run typecheck  # Run tsc
-bun test           # Run Vitest
+# Check for TypeScript errors
+bun run typecheck
 
+# Run ESLint to check for code quality issues
+bun run lint
+
+# Run the test suite
+bun test
 ```
 
+### 6. Local Development
 
-
-### Local Development
-
+Start the development server:
 ```bash
 bun dev
-
 ```
+Navigate to `http://localhost:3000` in your browser.
 
-Navigate to `http://localhost:3000`.
+---
+
+## 🚨 Troubleshooting
+
+If you encounter issues, check for these common problems:
+
+*   **`"GEMINI_API_KEY is missing"` error**:
+    *   **Cause**: The `GEMINI_API_KEY` is not set in your `.env.local` file.
+    *   **Solution**: Ensure `.env.local` exists and contains your API key.
+
+*   **`"node: command not found"` or `"bun: command not found"`**:
+    *   **Cause**: Node.js or Bun is not installed or not in your system's PATH.
+    *   **Solution**: Follow the installation instructions in the "Prerequisites" section.
+
+*   **Lint or Typecheck errors after installation**:
+    *   **Cause**: Your code editor might be showing errors for modules that haven't been installed yet.
+    *   **Solution**: Run `bun install` or `npm install`, then restart your code editor.
+
+*   **Tests are failing**:
+    *   **Cause**: Dependencies might be out of sync or the test setup is incorrect.
+    *   **Solution**: Ensure you have run `bun install` and that the `tests/setup.ts` file is present.
 
 ---
 
