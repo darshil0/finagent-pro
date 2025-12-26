@@ -14,6 +14,7 @@
 - [Architecture Overview](#-architecture-overview)
 - [Quick Start Guide](#-quick-start-guide)
 - [Troubleshooting](#-troubleshooting)
+- [Project Enhancements & Fixes](#-project-enhancements--fixes)
 - [Testing Strategy](#-testing-strategy)
 - [Features & Capabilities](#-features--capabilities)
 - [Deployment](#-deployment)
@@ -154,6 +155,28 @@ If you encounter issues, check for these common problems:
 *   **Tests are failing**:
     *   **Cause**: Dependencies might be out of sync or the test setup is incorrect.
     *   **Solution**: Ensure you have run `bun install` and that the `tests/setup.ts` file is present.
+
+---
+
+## ✨ Project Enhancements & Fixes
+
+This project has been updated with several key improvements to ensure code quality, streamline the development process, and provide a solid foundation for future work.
+
+### 1. Test Infrastructure
+
+A comprehensive test structure has been established using Vitest:
+*   **Directory Structure:** `tests/unit`, `tests/integration`, and `tests/e2e` directories have been created to organize tests.
+*   **Test Setup:** A global setup file at `tests/setup.ts` configures the test environment with DOM mocking.
+*   **Sample Test:** A sample unit test is available at `tests/unit/utils.test.ts` to demonstrate the testing setup.
+
+### 2. Consolidated Documentation
+
+To provide a single source of truth, all project documentation has been consolidated into this `README.md`. Redundant files (`ISSUES_AND_FIXES.md`, `SETUP_GUIDE.md`, and `FIXES_SUMMARY.md`) have been removed to avoid confusion.
+
+### 3. Automated Quality Checks
+
+*   **Pre-commit Hooks:** The project now uses **Husky** to automatically run the linter and TypeScript compiler before each commit. This prevents common errors from being introduced into the codebase.
+*   **Continuous Integration (CI/CD):** A **GitHub Actions** workflow is configured to run on every push and pull request. The CI pipeline automatically installs dependencies, runs the linter, executes the full test suite, and performs a production build to catch any potential issues.
 
 ---
 
