@@ -4,6 +4,23 @@ import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/ge
 import { z } from "zod";
 
 /**
+ * Custom error classes for better error handling
+ */
+class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ValidationError';
+  }
+}
+
+class ApiError extends Error {
+  constructor(message: string, public readonly statusCode?: number) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
+/**
  * Financial query validation schema with strict constraints
  * Follows Google TypeScript Style Guide: Use readonly for immutable data
  */
@@ -73,17 +90,7 @@ export async function analyzeFinancialDataAction(
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     console.error(`[${requestId}] Missing GEMINI_API_KEY environment variable`);
-    return {
-      success: false,
-      error: "AI service configuration error. Please contact system administrator.",
-      testCoverage: { 
-        inputValidation: false, 
-        apiResponse: false, 
-        dataParsing: false 
-      },
-      timestamp,
-      requestId
-    };
+    throw new ApiError("AI service configuration error. Please contact system administrator.", 500);
   }
 
   // Input extraction and sanitization
@@ -101,17 +108,7 @@ export async function analyzeFinancialDataAction(
     
     console.warn(`[${requestId}] Input validation failed: ${errorMessage}`);
     
-    return {
-      success: false,
-      error: `Invalid input: ${errorMessage}`,
-      testCoverage: { 
-        inputValidation: true, 
-        apiResponse: false, 
-        dataParsing: false 
-      },
-      timestamp,
-      requestId
-    };
+    throw new ValidationError(`Invalid input: ${errorMessage}`);
   }
 
   try {
@@ -169,7 +166,7 @@ Quality Standards:
     const responseText = response.text();
 
     if (!responseText || responseText.trim().length === 0) {
-      throw new Error("Empty response received from AI service");
+      throw new ApiError("Empty response received from AI service", 502);
     }
 
     // Chart data extraction and validation
@@ -212,6 +209,11 @@ Quality Standards:
     };
 
   } catch (error) {
+    // Re-throw custom errors
+    if (error instanceof ValidationError || error instanceof ApiError) {
+      throw error;
+    }
+
     const errorMessage = error instanceof Error 
       ? error.message 
       : "Unknown error occurred during analysis";
@@ -222,17 +224,7 @@ Quality Standards:
       duration: Date.now() - timestamp
     });
     
-    return {
-      success: false,
-      error: "Analysis service temporarily unavailable. Please try again.",
-      testCoverage: { 
-        inputValidation: true, 
-        apiResponse: false, 
-        dataParsing: false 
-      },
-      timestamp,
-      requestId
-    };
+    throw new ApiError("Analysis service temporarily unavailable. Please try again.", 503);
   }
 }
 
