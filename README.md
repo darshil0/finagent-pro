@@ -1,8 +1,8 @@
 # AI FinAgent QA - Production-Grade Testing Framework
 
-[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](CHANGELOG.md)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6+-blue)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-15.0+-black)](https://nextjs.org/)
+[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](CHANGELOG.md)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0+-blue)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.0+-black)](https://nextjs.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Code Style](https://img.shields.io/badge/code%20style-Google-4285f4)](https://google.github.io/styleguide/tsguide.html)
 
@@ -22,13 +22,13 @@
 
 ---
 
-## 🎯 Version 2.1.0 - Maintenance & Structure Update (Feb 2025)
+## 🎯 Version 2.2.0 - Structure Optimization (May 2026)
 
 ### Recent Improvements
-* **Infrastructure Hardening**: Fixed broken utility tests and resolved project-wide TypeScript errors.
-* **Organized Structure**: Migrated utility functions to `@/lib/utils` and consolidated documentation.
+* **Asset Cleanup**: Removed unused boilerplate SVG files and unused UI components (Spinner).
+* **Refined Structure**: Consolidated React hooks into `src/hooks` and removed redundant `src/lib/hooks` and `src/visual-edits`.
+* **Configuration Streamlining**: Simplified `tsconfig.json` and `vitest.config.ts` path aliases for better maintainability.
 * **Dependency Refresh**: Updated to Next.js 16, React 19, and Tailwind CSS 4.
-* **ESLint Flat Config**: Fully migrated to ESLint 9/10 with Flat Config compatibility.
 
 ---
 
@@ -63,7 +63,7 @@ cp .env.example .env.local
 4. **Verify Quality**
 ```bash
 bun run lint       # Run ESLint
-bun run typecheck   # Run Type Checking (npx tsc --noEmit)
+bun x tsc --noEmit  # Run Type Checking
 bun test           # Run Vitest
 ```
 
@@ -84,7 +84,7 @@ Navigate to `http://localhost:3000`.
 
 | Layer | Technology | Version | Purpose |
 |-------|-----------|---------|---------|
-| **Framework** | Next.js | 15.3+ | App Router & SSR |
+| **Framework** | Next.js | 16.2+ | App Router & SSR |
 | **UI Library** | React | 19.0 | Component Architecture |
 | **Testing** | Vitest | 4.1+ | Unit/Integration Testing |
 | **UI Components** | shadcn/ui | Latest | Radix UI + Tailwind |
@@ -103,7 +103,6 @@ ai-finagent-qa/
 │   ├── hooks/              # Custom React hooks (SSR-safe)
 ├── tests/
 │   ├── unit/               # Logic & Utility tests
-│   ├── integration/        # Component & API tests
 │   └── setup.ts            # Vitest setup & global mocks
 ├── public/                 # Static assets
 └── config/                 # Tool-specific configurations
@@ -165,4 +164,4 @@ bun run test:watch      # Watch mode
 Distributed under the MIT License. See `LICENSE` for more information.
 
 **Developed with precision by Darshil**
-*Last updated: April 2026*
+*Last updated: May 2026*

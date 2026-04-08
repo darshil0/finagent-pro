@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] - 2026-05-15
+
+### Changed
+- Refined project structure by consolidating hooks into `src/hooks/`.
+- Simplified `tsconfig.json` and `vitest.config.ts` path aliases, removing redundant `@/components/*` and `@/lib/*` mappings.
+- Updated `README.md` to reflect the optimized project structure and updated dependency versions.
+
+### Removed
+- Deleted unused SVG assets in `public/` (`file.svg`, `globe.svg`, `next.svg`, `vercel.svg`, `window.svg`).
+- Removed unused `src/components/ui/spinner.tsx` component.
+- Deleted redundant `src/lib/hooks/` directory.
+- Removed unused `src/visual-edits/` directory and cleaned up related ESLint ignores.
+
 ## [2.1.0] - 2026-04-08
 
 ### Fixed
