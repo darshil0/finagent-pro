@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
  * Combines tailwind-merge and clsx to handle conditional classes 
  * and resolve Tailwind utility conflicts.
  */
-export function cn(...inputs: ClassValue[]) {
+export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(...inputs));
 }
 
@@ -19,8 +19,8 @@ export const BREAKPOINTS = {
 
 export function formatCurrency(
   value: number | string | null | undefined,
-  currency = "USD",
-  precision = 0
+  currency: string = "USD",
+  precision: number = 0
 ): string {
   const numericValue = typeof value === 'string' ? parseFloat(value) : value;
   if (numericValue === null || numericValue === undefined || isNaN(numericValue)) return "-";
@@ -38,7 +38,7 @@ export function debounce<T extends (...args: any[]) => any>(
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
-  return (...args: Parameters<T>) => {
+  return (...args: Parameters<T>): void => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
