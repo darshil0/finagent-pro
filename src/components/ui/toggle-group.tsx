@@ -16,9 +16,8 @@ const ToggleGroupContext = React.createContext<ToggleGroupContextValue>({
   type: "single"
 });
 
-interface ToggleGroupProps
-  extends React.ComponentProps<typeof ToggleGroupPrimitive.Root>,
-    VariantProps<typeof toggleVariants> {
+type ToggleGroupProps = React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Root> &
+    VariantProps<typeof toggleVariants> & {
   groupVariant?: "test-suite" | "compliance" | "metrics" | "default";
 }
 
@@ -41,7 +40,7 @@ const ToggleGroup = React.forwardRef<
       data-variant={variant}
       data-size={size}
       data-group-variant={groupVariant}
-      type={type}
+      type={type as any}
       className={cn(
         // QA Dashboard Group Container
         "inline-flex h-fit w-fit p-1 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-sky-500/20 transition-all group/toggle-group",
@@ -55,7 +54,7 @@ const ToggleGroup = React.forwardRef<
       )}
       {...props}
     >
-      <ToggleGroupContext.Provider value={{ variant, size, type }}>
+      <ToggleGroupContext.Provider value={{ variant, size, type: type as any }}>
         {children}
       </ToggleGroupContext.Provider>
     </ToggleGroupPrimitive.Root>
@@ -65,7 +64,7 @@ ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName;
 
 const ToggleGroupItem = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Item>,
-  React.ComponentProps<typeof ToggleGroupPrimitive.Item> & VariantProps<typeof toggleVariants>
+  React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Item> & VariantProps<typeof toggleVariants>
 >(({ 
   className, 
   children, 

@@ -6,21 +6,17 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
 interface AlertDialogProps
-  extends React.ComponentProps<typeof AlertDialogPrimitive.Root> {
+  extends React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Root> {
   variant?: "default" | "test-fail" | "compliance" | "destructive" | "success";
 }
 
-const AlertDialog = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Root>,
-  AlertDialogProps
->(({ variant = "default", ...props }, ref) => (
+const AlertDialog = ({ variant = "default", ...props }: AlertDialogProps) => (
   <AlertDialogPrimitive.Root
-    ref={ref}
     data-slot="alert-dialog"
     data-variant={variant}
     {...props}
   />
-));
+);
 AlertDialog.displayName = AlertDialogPrimitive.Root.displayName;
 
 const AlertDialogTrigger = React.forwardRef<
@@ -39,12 +35,9 @@ const AlertDialogTrigger = React.forwardRef<
 ));
 AlertDialogTrigger.displayName = AlertDialogPrimitive.Trigger.displayName;
 
-const AlertDialogPortal = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Portal>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Portal>
->(({ className, ...props }, ref) => (
-  <AlertDialogPrimitive.Portal ref={ref} data-slot="alert-dialog-portal" {...props} />
-));
+const AlertDialogPortal = (props: AlertDialogPrimitive.AlertDialogPortalProps) => (
+  <AlertDialogPrimitive.Portal data-slot="alert-dialog-portal" {...props} />
+);
 AlertDialogPortal.displayName = AlertDialogPrimitive.Portal.displayName;
 
 const AlertDialogOverlay = React.forwardRef<
@@ -98,31 +91,25 @@ const AlertDialogContent = React.forwardRef<
 ));
 AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
 
-const AlertDialogHeader = React.forwardRef<
-  React.ElementRef<"div">,
-  React.ComponentPropsWithoutRef<"div">
->(({ className, ...props }, ref) => (
+const AlertDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    ref={ref}
     data-slot="alert-dialog-header"
     className={cn("flex flex-col space-y-3 text-center sm:text-left", className)}
+    {...props}
   />
-));
+);
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
-const AlertDialogFooter = React.forwardRef<
-  React.ElementRef<"div">,
-  React.ComponentPropsWithoutRef<"div">
->(({ className, ...props }, ref) => (
+const AlertDialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    ref={ref}
     data-slot="alert-dialog-footer"
     className={cn(
       "flex flex-col-reverse gap-3 sm:flex-row sm:justify-end",
       className
     )}
+    {...props}
   />
-));
+);
 AlertDialogFooter.displayName = "AlertDialogFooter";
 
 const AlertDialogTitle = React.forwardRef<

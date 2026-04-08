@@ -24,11 +24,9 @@ export function useIsMobile() {
       return () => mql.removeEventListener('change', handleChange);
     } else {
       // Safari < 14 fallback
-      // @ts-expect-error legacy API
-      mql.addListener(handleChange);
+      (mql as any).addListener(handleChange);
       return () => {
-        // @ts-expect-error legacy API
-        mql.removeListener(handleChange);
+        (mql as any).removeListener(handleChange);
       };
     }
   }, []);

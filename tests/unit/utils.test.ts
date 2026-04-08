@@ -4,13 +4,13 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { cn } from '../../src/lib/utils';
 import {
+    cn,
     formatCurrency,
     truncate,
     safeJsonParse,
     debounce
-} from '../../src/test/setup';
+} from '../../src/lib/utils';
 
 describe('cn (className merger)', () => {
     it('should merge class names', () => {
@@ -20,7 +20,9 @@ describe('cn (className merger)', () => {
     });
 
     it('should handle conditional classes', () => {
-        const result = cn('base', false && 'hidden', true && 'visible');
+        const isHidden = false;
+        const isVisible = true;
+        const result = cn('base', isHidden && 'hidden', isVisible && 'visible');
         expect(result).toContain('base');
         expect(result).toContain('visible');
         expect(result).not.toContain('hidden');

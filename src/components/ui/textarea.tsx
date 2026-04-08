@@ -53,12 +53,21 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       }
     };
 
+    const setRefs = React.useCallback(
+      (node: HTMLTextAreaElement | null) => {
+        (textAreaRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
+        if (typeof ref === "function") {
+          ref(node);
+        } else if (ref) {
+          (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
+        }
+      },
+      [ref]
+    );
+
     return (
       <textarea
-        ref={(node) => {
-          textAreaRef.current = node;
-          if (ref) ref.current = node;
-        }}
+        ref={setRefs}
         data-slot="textarea"
         className={cn(
           // QA Dashboard Glassmorphism

@@ -1,93 +1,79 @@
-/* AI FinAgent QA - Production CSS | 2025-12-23 */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    /* Refined Deep Slate Palette for low eye-strain during long QA sessions */
-    --background: 222 47% 4%;
-    --foreground: 213 31% 91%;
-    --card: 222 47% 6%;
-    --card-foreground: 213 31% 91%;
-    --popover: 222 47% 4%;
-    --popover-foreground: 213 31% 91%;
-    --primary: 199 89% 48%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 217 33% 17%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 199 89% 48%;
-    --radius: 0.75rem;
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
 
-    /* Chart Semantic Colors */
-    --chart-1: 199 89% 48%; /* Sky 500 */
-    --chart-2: 142 71% 45%; /* Emerald 500 */
-    --chart-3: 245 58% 66%; /* Indigo 400 */
-    --chart-4: 28 91% 54%;  /* Orange 500 */
-    --chart-5: 0 84% 60%;   /* Red 500 */
-  }
+:root {
+  --background: #020617;
+  --foreground: #f8fafc;
+  --card: #030712;
+  --card-foreground: #f8fafc;
+  --popover: #020617;
+  --popover-foreground: #f8fafc;
+  --primary: #0ea5e9;
+  --primary-foreground: #f8fafc;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #0ea5e9;
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
   body {
-    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/30 selection:text-primary-foreground;
-    /* Prevent layout shift on scrollbar appearance */
-    scrollbar-gutter: stable;
+    @apply bg-background text-foreground;
   }
 }
 
-@layer components {
-  /* Enhanced Glassmorphism with Safari Fix */
-  .glass-card {
-    @apply relative overflow-hidden rounded-2xl border border-white/5 bg-slate-900/40 shadow-2xl;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px); /* Safari Support */
-  }
-
-  /* Status Badges with Subtle Glow */
-  .status-pass {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)];
-  }
-
-  .status-fail {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-500/10 text-red-400 border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)];
-  }
-
-  .status-warning {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.1)];
-  }
+.glass-card {
+  @apply relative overflow-hidden rounded-2xl border border-white/5 bg-slate-900/40 shadow-2xl;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-@layer utilities {
-  /* High-Performance Custom Scrollbar */
-  .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: theme('colors.slate.800') transparent;
-  }
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #1e293b transparent;
+}
 
-  .custom-scrollbar::-webkit-scrollbar {
-    @apply w-1.5;
-  }
+.custom-scrollbar::-webkit-scrollbar {
+  @apply w-1.5;
+}
 
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-slate-800 rounded-full hover:bg-slate-700 transition-colors;
-  }
-
-  /* Optimized Animation for Live Indicators */
-  .animate-qa-pulse {
-    animation: qa-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes qa-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .4; }
-  }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-slate-800 rounded-full hover:bg-slate-700 transition-colors;
 }
