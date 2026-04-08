@@ -27,7 +27,12 @@ export default function MarkdownRenderer({ content, className = '' }: MarkdownRe
           p: ({ children }: { children?: React.ReactNode }) => <p className="text-slate-300 leading-relaxed my-3">{children}</p>,
           
           // Fix for the code block typing and rendering
-          code({ inline, className, children, ...props }: any) {
+          code({ inline, className, children, ...props }: {
+            inline?: boolean;
+            className?: string;
+            children?: React.ReactNode;
+            [key: string]: unknown;
+          }) {
             return !inline ? (
               <div className="relative group">
                 <pre className="bg-slate-900/80 border border-slate-800 p-4 rounded-lg overflow-x-auto my-4">
