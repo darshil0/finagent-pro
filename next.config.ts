@@ -42,10 +42,7 @@ const nextConfig = {
 
   // Production-ready linting & TypeScript
   typescript: {
-    ignoreBuildErrors: false,  // ✅ Fix: Enforce TS errors
-  },
-  eslint: {
-    ignoreDuringBuilds: false,  // ✅ Fix: Enforce linting
+    ignoreBuildErrors: false,
   },
 
   // Security headers

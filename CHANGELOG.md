@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.1] - 2026-05-20
+
+### Fixed
+- Fixed TypeScript types in `MarkdownRenderer.tsx` to avoid `any` and handle component props correctly.
+- Added missing `peerDependencies` to `package.json` for ESLint compatibility.
+- Added missing scripts to `package.json` (`lint:fix`, `type-check`, etc.).
+
+### Changed
+- Bumped version to 2.2.1.
+
 ## [2.2.0] - 2026-05-15
 
 ### Changed
