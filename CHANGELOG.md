@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.1.0] - 2025-02-14
+## [2.1.0] - 2026-04-08
 
 ### Fixed
 - Fixed `formatCurrency` utility function to correctly handle invalid inputs and match test expectations.
