@@ -37,6 +37,6 @@ export default ts.config(
     },
   },
   {
-    ignores: [".next/", "node_modules/", "dist/", "coverage/", "src/visual-edits/component-tagger-loader.js"],
+    ignores: [".next/", "node_modules/", "dist/", "coverage/"],
   }
 );
