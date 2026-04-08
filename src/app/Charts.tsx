@@ -2,20 +2,11 @@
 
 import React from 'react';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
-interface ChartDataItem {
-  name: string;
-  value: number;
-}
-
-interface ChartsProps {
-  type: 'trend' | 'sector' | 'heatmap';
-  items: ChartDataItem[];
-}
+import { type ChartDataItem } from './page';
 
 const COLORS = ['#0ea5e9', '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b'];
 
-export default function Charts({ type, items }: ChartsProps) {
+export default function Charts({ type, items }: { type: 'trend' | 'sector' | 'heatmap'; items: ChartDataItem[] }) {
   if (!items || items.length === 0) {
     return (
       <div className="w-full h-[400px] flex items-center justify-center bg-slate-900/30 rounded-2xl border border-slate-700/30">
@@ -56,7 +47,7 @@ export default function Charts({ type, items }: ChartsProps) {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }) => `${name}: ${((percent || 0) * 100).toFixed(0)}%`}
                 outerRadius={120}
                 fill="#8884d8"
                 dataKey="value"

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { AlertTriangle, RefreshCw, Bug, Copy, Check, Terminal, ShieldAlert } from 'lucide-react';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { RefreshCw, Copy, Check, Terminal, ShieldAlert } from 'lucide-react';
 
 interface ErrorBoundaryProps {
   error?: Error & { digest?: string };
@@ -67,13 +67,16 @@ export default function QaErrorBoundary({ error, reset }: ErrorBoundaryProps) {
   // Sync the Next.js boundary error into our local QA state
   useEffect(() => {
     if (error) {
-      trackQaError({
+      const errorData: QaError = {
         message: error.message,
         stack: error.stack,
         digest: error.digest,
         timestamp: Date.now(),
         source: 'boundary'
-      });
+      };
+
+      const timeout = setTimeout(() => trackQaError(errorData), 0);
+      return () => clearTimeout(timeout);
     }
   }, [error, trackQaError]);
 

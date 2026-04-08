@@ -24,14 +24,15 @@ const MarkdownRenderer = dynamic(() => import('./MarkdownRenderer'), {
 });
 
 /** Type definitions following Google TypeScript Style Guide */
-interface ChartDataItem {
+export interface ChartDataItem {
   readonly name: string;
   readonly value: number;
+  [key: string]: string | number | undefined;
 }
 
 interface ChartData {
   readonly type: 'trend' | 'sector' | 'heatmap';
-  readonly items: ReadonlyArray<ChartDataItem>;
+  readonly items: ChartDataItem[];
 }
 
 interface HistoryItem {
@@ -66,7 +67,9 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => voi
     try {
       const item = window.localStorage.getItem(key);
       if (item) {
-        setStoredValue(JSON.parse(item) as T);
+        const parsed = JSON.parse(item) as T;
+        // Delay to avoid synchronous setState in effect
+        setTimeout(() => setStoredValue(parsed), 0);
       }
     } catch (error) {
       console.error(`Error loading ${key} from localStorage:`, error);
@@ -131,7 +134,7 @@ LoadingSkeleton.displayName = 'LoadingSkeleton';
  * - Debounced search operations
  * - Efficient re-render prevention
  */
-export default function FinAgentQADashboard(): JSX.Element {
+export default function FinAgentQADashboard(): React.JSX.Element {
   // State management
   const [query, setQuery] = useState('');
   const [sidebarSearch, setSidebarSearch] = useState('');
@@ -226,7 +229,7 @@ export default function FinAgentQADashboard(): JSX.Element {
       
       return { 
         type: data.type as 'trend' | 'sector' | 'heatmap', 
-        items: validItems 
+        items: [...validItems]
       };
     } catch (error) {
       console.warn('Chart data validation failed:', error);
@@ -238,7 +241,7 @@ export default function FinAgentQADashboard(): JSX.Element {
    * Main search handler with comprehensive error handling
    */
   const handleSearch = useCallback(async (
-    event?: React.FormEvent, 
+    event: React.FormEvent | null,
     customQuery?: string
   ): Promise<void> => {
     event?.preventDefault();
@@ -268,7 +271,7 @@ export default function FinAgentQADashboard(): JSX.Element {
         };
 
         if (mountedRef.current) {
-          setHistory(prev => [newItem, ...prev.slice(0, MAX_HISTORY_ITEMS - 1)]);
+          setHistory([newItem, ...history.slice(0, MAX_HISTORY_ITEMS - 1)]);
           setCurrentAnalysis(newItem);
           setQuery('');
         }

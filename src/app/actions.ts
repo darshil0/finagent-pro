@@ -1,6 +1,6 @@
 "use server";
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { z } from "zod";
 
 /**
@@ -13,7 +13,7 @@ const FinancialQuerySchema = z.object({
     .min(3, "Query must contain at least 3 characters")
     .max(2000, "Query exceeds maximum length of 2000 characters")
     .trim()
-}) as const;
+});
 
 /**
  * Chart data validation schema
@@ -27,7 +27,7 @@ const ChartSchema = z.object({
       value: z.number().finite()
     })
   ).min(1, "Chart must contain at least one data point")
-}) as const;
+});
 
 /**
  * Standardized API response interface
@@ -95,8 +95,8 @@ export async function analyzeFinancialDataAction(
   const validation = FinancialQuerySchema.safeParse({ prompt: rawPrompt });
   
   if (!validation.success) {
-    const errorMessage = validation.error.errors
-      .map(err => err.message)
+    const errorMessage = validation.error.issues
+      .map((err: z.ZodIssue) => err.message)
       .join("; ");
     
     console.warn(`[${requestId}] Input validation failed: ${errorMessage}`);
@@ -127,8 +127,8 @@ export async function analyzeFinancialDataAction(
       },
       safetySettings: [
         {
-          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
         }
       ]
     });
@@ -165,7 +165,7 @@ Quality Standards:
       `User Query: ${validation.data.prompt}`
     ]);
 
-    const response = await result.response;
+    const response = result.response;
     const responseText = response.text();
 
     if (!responseText || responseText.trim().length === 0) {

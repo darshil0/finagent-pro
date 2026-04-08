@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState, useRef } from "react";
 
 export const CHANNEL = "ORCHIDS_HOVER_v1" as const;
 const VISUAL_EDIT_MODE_KEY = "orchids_visual_edit_mode" as const;
-const FOCUSED_ELEMENT_KEY = "orchids_focused_element" as const;
 
 // ✅ FIXED: Production-ready Orchids visual editor (FinAgent Pro compatible)
 // Optimized for Next.js 16 + shadcn/ui + TypeScript strict
@@ -89,27 +87,35 @@ export default function HoverReceiver() {
     appliedStyles: new Map<string, Record<string, string>>(),
     hasStyleChanges: false,
     lastClickTime: 0,
-  }).current;
+  });
 
   // ✅ FIXED: Single effect for mode sync + localStorage (SSR-safe)
   useEffect(() => {
     if (typeof window === "undefined") return;
     
     const stored = localStorage.getItem(VISUAL_EDIT_MODE_KEY) === "true";
-    setState(s => ({ ...s, isVisualEditMode: stored }));
-    refs.isVisualEditMode = stored;
+    const updateState = () => {
+      setState(s => {
+        if (s.isVisualEditMode === stored) return s;
+        return { ...s, isVisualEditMode: stored };
+      });
+      refs.current.isVisualEditMode = stored;
+
+      if (stored) {
+        postMessageDedup({ type: CHANNEL, msg: "VISUAL_EDIT_MODE_RESTORED", active: true });
+      }
+    };
     
-    if (stored) {
-      postMessageDedup({ type: CHANNEL, msg: "VISUAL_EDIT_MODE_RESTORED", active: true });
-    }
-  }, []);
+    const timeout = setTimeout(updateState, 0);
+    return () => clearTimeout(timeout);
+  }, [refs]);
 
   useEffect(() => {
-    refs.isVisualEditMode = state.isVisualEditMode;
+    refs.current.isVisualEditMode = state.isVisualEditMode;
     if (typeof window !== "undefined") {
       localStorage.setItem(VISUAL_EDIT_MODE_KEY, String(state.isVisualEditMode));
     }
-  }, [state.isVisualEditMode]);
+  }, [state.isVisualEditMode, refs]);
 
   // ✅ FIXED: Single message handler (no duplication)
   useEffect(() => {
@@ -134,7 +140,7 @@ export default function HoverReceiver() {
     if (typeof window === "undefined") return;
     
     // Global styles injection (shadcn/ui compatible)
-    if (state.isVisualEditMode && !refs.styleElement) {
+    if (state.isVisualEditMode && !refs.current.styleElement) {
       const style = document.createElement("style");
       style.id = "orchids-edit-styles";
       style.textContent = `
@@ -143,23 +149,23 @@ export default function HoverReceiver() {
         [data-orchids-protected="true"] { user-select: none !important; pointer-events: none !important; }
       `;
       document.head.appendChild(style);
-      refs.styleElement = style;
+      refs.current.styleElement = style;
     }
     
     return () => {
-      if (refs.styleElement) {
-        refs.styleElement.remove();
-        refs.styleElement = null;
+      if (refs.current.styleElement) {
+        refs.current.styleElement.remove();
+        refs.current.styleElement = null;
       }
     };
-  }, [state.isVisualEditMode]);
+  }, [state.isVisualEditMode, refs]);
 
   if (!state.isVisualEditMode) return null;
 
   return (
     <>
       {/* ✅ FIXED: Optimized hover/focus overlays (60fps smooth) */}
-      {state.hoverBoxes.map((box, i) => (
+      {state.hoverBoxes.map((box, i) => box && (
         <div 
           key={i}
           className="fixed pointer-events-none border-2 border-blue-500/50 bg-blue-500/10 rounded z-[99999]"

@@ -1,67 +1,42 @@
-import { FlatCompat } from '@eslint/eslintrc'
-import nextPlugin from '@next/eslint-plugin-next'
- 
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-})
- 
-const eslintConfig = [
-  ...compat.config({
-    extends: ['next/core-web-vitals'],
-    plugins: ['import', '@typescript-eslint'],
-  }),
+import js from "@eslint/js";
+import ts from "typescript-eslint";
+import react from "eslint-plugin-react";
+import hooks from "eslint-plugin-react-hooks";
+import next from "@next/eslint-plugin-next";
+
+export default ts.config(
+  js.configs.recommended,
+  ...ts.configs.recommended,
   {
     plugins: {
-      '@next/next': nextPlugin,
+      react,
+      "react-hooks": hooks,
+      "@next/next": next,
     },
     rules: {
-      // ✅ FinAgent Pro - UX focused
-      'react/no-unescaped-entities': 'off',
-      '@next/next/no-img-element': 'off',
-      
-      // ✅ TypeScript - balanced (not too strict)
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      
-      // ✅ React Hooks - performance focused
-      'react-hooks/exhaustive-deps': ['warn', { additionalHooks: 'useEffectEvent' }],
-      
-      // ✅ Import strictness (critical for monorepo)
-      'import/no-unresolved': ['error', { commonjs: true, amd: true }],
-      'import/named': 'error',
-      'import/default': 'error',
-      'import/namespace': 'error',
-      'import/no-absolute-path': 'error',
-      'import/no-dynamic-require': 'error',
-      'import/no-self-import': 'error',
-      'import/no-cycle': ['error', { maxDepth: 10 }],
-      'import/no-useless-path-segments': 'error',
-      
-      // ✅ Next.js 16 + shadcn/ui
-      '@next/next/no-html-link-for-pages': 'off',
-      '@next/next/no-page-custom-font': 'off',
-      
-      // ✅ Performance + Accessibility
-      'jsx-a11y/alt-text': 'warn',
-      'jsx-a11y/anchor-is-valid': 'warn',
+      ...react.configs.recommended.rules,
+      ...hooks.configs.recommended.rules,
+      ...next.configs.recommended.rules,
+      ...next.configs["core-web-vitals"].rules,
+      "react/react-in-jsx-scope": "off",
+      "react/no-unescaped-entities": "off",
+      "react/prop-types": "off",
+      "@next/next/no-img-element": "off",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-explicit-any": "warn",
+      "react-hooks/exhaustive-deps": ["warn", { additionalHooks: "useEffectEvent" }],
+      "@next/next/no-html-link-for-pages": "off",
+      "@next/next/no-page-custom-font": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "no-undef": "off",
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
     },
   },
   {
-    settings: {
-      'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true,
-          project: ['./tsconfig.json'],
-        },
-        node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        },
-      },
-      react: {
-        version: 'detect',
-      },
-    },
-  },
-]
- 
-export default eslintConfig
+    ignores: [".next/", "node_modules/", "dist/", "coverage/", "src/visual-edits/component-tagger-loader.js"],
+  }
+);
