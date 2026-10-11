@@ -4,13 +4,24 @@ All notable changes to this project will be documented in this file.
 
 ## [2.2.1] - 2026-05-20
 
-### Fixed
-- Fixed TypeScript types in `MarkdownRenderer.tsx` to avoid `any` and handle component props correctly.
-- Added missing `peerDependencies` to `package.json` for ESLint compatibility.
+### Security
+- Configured strict HTTP security headers in `next.config.ts` including Content-Security-Policy, Strict-Transport-Security, and Permissions-Policy.
+- Untracked `.env.local` file from git index and updated `.gitignore` to protect local environment configurations.
+
+### Added
+- Added GitHub workflow CI configuration (`.github/workflows/ci.yml`), issue templates, and pull request template.
+- Added Husky pre-commit hook configuration for automated linting and type-checking.
 - Added missing scripts to `package.json` (`lint:fix`, `type-check`, etc.).
+
+### Fixed
+- Fixed TypeScript types in `MarkdownRenderer.tsx` to handle component props cleanly and avoid `any`.
+- Added missing `peerDependencies` to `package.json` for ESLint 9 compatibility.
+- Resolved React/ESLint hook dependencies and unused variable warnings in UI components.
 
 ### Changed
 - Bumped version to 2.2.1.
+- Optimized dependencies in `package.json`, moving dev tools like `drizzle-kit` to `devDependencies` and standardizing on `bun.lock`.
+- Streamlined `next.config.ts` image remote patterns and headers.
 
 ## [2.2.0] - 2026-05-15
 
