@@ -38,6 +38,8 @@ yarn-error.log*
 next-env.d.ts
 
 # local
+.env*.local
+.env.local
 dev_server.log
 test-results/
 playwright-report/

@@ -1,6 +1,6 @@
 # AI FinAgent QA - Production-Grade Testing Framework
 
-[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.2.1-blue.svg)](CHANGELOG.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0+-blue)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-16.0+-black)](https://nextjs.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -22,13 +22,12 @@
 
 ---
 
-## 🎯 Version 2.2.0 - Structure Optimization (May 2026)
+## 🎯 Version 2.2.1 - Safety & Maintenance Cleanup (May 2026)
 
 ### Recent Improvements
-* **Asset Cleanup**: Removed unused boilerplate SVG files and unused UI components (Spinner).
-* **Refined Structure**: Consolidated React hooks into `src/hooks` and removed redundant `src/lib/hooks` and `src/visual-edits`.
-* **Configuration Streamlining**: Simplified `tsconfig.json` and `vitest.config.ts` path aliases for better maintainability.
-* **Dependency Refresh**: Updated to Next.js 16, React 19, and Tailwind CSS 4.
+* **Security & Environment**: Removed tracked `.env.local` file from git index and updated `.gitignore`. Configured strict HTTP headers including Content-Security-Policy, Strict-Transport-Security, and Permissions-Policy in `next.config.ts`.
+* **Dependency Optimization**: Cleaned bloated unused dependencies in `package.json`, moved dev tooling (`drizzle-kit`) to `devDependencies`, and unified on `bun.lock`.
+* **Configuration Streamlining**: Refined image remote patterns in `next.config.ts` and resolved React/ESLint effect issues in UI components.
 
 ---
 
@@ -125,7 +124,7 @@ bun run test:watch      # Watch mode
 
 * **AAA Pattern**: All tests must follow Arrange-Act-Assert.
 * **Mocking**: Use `msw` (Mock Service Worker) for API layer isolation.
-* **Coverage**: Minimum 90% coverage required for `src/lib` and `src/app/actions.ts`.
+* **Coverage**: Coverage target enforced for `src/lib` and `src/app/actions.ts`.
 
 ---
 
